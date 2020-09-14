@@ -11,6 +11,12 @@ int main(int argc, char *argv[]){
 	 *
 	 *
 	 */
+        
+        // 1. Save start time using gettimeofday().
+
+        // 2. Run getpid() 100,000 times.
+
+        // 3. Calculate time elapsed and average syscall using floating point arithemtic. 
 
 	return 0;
 
