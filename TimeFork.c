@@ -4,18 +4,12 @@
 #include <unistd.h>
 #include <sys/wait.h>
 
-// Place any necessary global variables here
-int ITERATIONS = 5000;
-
 int main(int argc, char *argv[]){
 
-        // 1. Save start time using gettimeofday().
+        int ITERATIONS = 5000;
         struct timeval start, end;
         gettimeofday(&start, NULL);
 
-        // For 5,000 times:
-        //      1. Call fork() and then wait() or waitpid()
-        //      2. Child process should immediately terminiate with exit() or return
         for (int i = 0; i < ITERATIONS; i++){
                 if (fork() == 0){
                         exit(0);
@@ -24,12 +18,14 @@ int main(int argc, char *argv[]){
                 }
         }
 
-        // 3. Calculate time elapsed and average syscall using floating point arithemtic. 
         gettimeofday(&end, NULL);
-
         long seconds = (end.tv_sec - start.tv_sec);
-        long microseconds = ((seconds * 1000000) + end.tv_usec ) - (start.tv_usec);
-        printf("Time elapsed is %ld seconds and %ld miliseconds\n", seconds, microseconds);
+        long microseconds = (seconds * 1000000) + (end.tv_usec - start.tv_usec);
+        double avg_microseconds = (float) microseconds / ITERATIONS;
+
+        printf("Forks Performed: %d\n", ITERATIONS);
+        printf("Total Elapsed Time: %ld microseconds\n", microseconds);
+        printf("Average Time Per Fork: %f microseconds\n", avg_microseconds);
 
 	return 0;
 
